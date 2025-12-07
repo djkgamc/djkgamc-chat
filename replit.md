@@ -26,6 +26,17 @@ This is a Next.js application that demonstrates the OpenAI Responses API. It pro
   - Automatically skips clarification for well-defined queries
   - Users can skip manually or add custom details
 - **Mutually Exclusive Toggles:** Web search and deep research are now mutually exclusive - enabling one disables the other
+- **Enhanced Markdown Rendering:** Custom Markdown component with:
+  - Proper typography (bold, italics, headers with correct weights)
+  - Ample paragraph spacing for readability
+  - Blue underlined links that all open in new windows (target="_blank")
+  - Styled code blocks, blockquotes, tables, and lists
+  - Uses remark-gfm for GitHub-flavored markdown support
+- **Mobile Responsive:** Chat layout adapts to mobile screens with:
+  - Flexible height instead of fixed viewport
+  - Responsive padding for narrow screens
+  - Sticky message input at the bottom
+  - Gradient fade effect above input area
 
 ## Project Architecture
 
