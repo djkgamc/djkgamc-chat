@@ -64,10 +64,10 @@ const Chat: React.FC<ChatProps> = ({
   }, [items]);
 
   return (
-    <div className="flex justify-center items-center size-full">
-      <div className="flex grow flex-col h-full max-w-[750px] gap-2">
-        <div className="h-[90vh] overflow-y-scroll px-4 md:px-10 flex flex-col">
-          <div className="mt-auto space-y-5 pt-4">
+    <div className="flex justify-center items-center min-h-screen h-full w-full">
+      <div className="flex grow flex-col h-full min-h-screen max-w-[750px] w-full">
+        <div className="flex-1 overflow-y-auto px-3 sm:px-6 md:px-10 flex flex-col">
+          <div className="mt-auto space-y-5 pt-4 pb-4">
             {items.map((item, index) => {
               const isLastAssistantMessage = 
                 item.type === "message" && 
@@ -108,11 +108,11 @@ const Chat: React.FC<ChatProps> = ({
             <div ref={itemsEndRef} />
           </div>
         </div>
-        <div className="flex-1 p-4 px-4 md:px-10">
+        <div className="sticky bottom-0 p-3 sm:p-4 px-3 sm:px-6 md:px-10 bg-gradient-to-t from-white via-white to-transparent pt-6">
           <div className="flex items-center">
-            <div className="flex w-full items-center pb-4 md:pb-1">
-              <div className="flex w-full flex-col gap-1.5 rounded-[20px] p-2.5 pl-1.5 transition-colors bg-white border border-stone-200 shadow-sm">
-                <div className="flex items-end gap-1.5 md:gap-2 pl-4">
+            <div className="flex w-full items-center pb-safe">
+              <div className="flex w-full flex-col gap-1.5 rounded-[20px] p-2 sm:p-2.5 pl-1.5 transition-colors bg-white border border-stone-200 shadow-sm">
+                <div className="flex items-end gap-1 sm:gap-2 pl-3 sm:pl-4">
                   <div className="flex min-w-0 flex-1 flex-col">
                     <textarea
                       id="prompt-textarea"
@@ -120,7 +120,7 @@ const Chat: React.FC<ChatProps> = ({
                       dir="auto"
                       rows={2}
                       placeholder="Message..."
-                      className="mb-2 resize-none border-0 focus:outline-none text-sm bg-transparent px-0 pb-2 pt-2"
+                      className="mb-2 resize-none border-0 focus:outline-none text-base sm:text-sm bg-transparent px-0 pb-2 pt-2"
                       value={inputMessageText}
                       onChange={(e) => setinputMessageText(e.target.value)}
                       onKeyDown={handleKeyDown}
