@@ -521,6 +521,16 @@ export const processMessages = async () => {
           console.log("response completed", data);
           setStreamingPhase("idle");
           setIsStreaming(false);
+          
+          if (typeof window !== "undefined" && "Notification" in window) {
+            if (Notification.permission === "granted") {
+              new Notification("Response ready", {
+                body: "Your assistant has finished responding",
+                icon: "/openai_logo.svg",
+              });
+            }
+          }
+          
           const { response } = data;
 
           // Handle MCP tools list (append all lists, not just the first)

@@ -10,7 +10,7 @@ import { Item, McpApprovalRequestItem } from "@/lib/assistant";
 import LoadingMessage from "./loading-message";
 import useConversationStore from "@/stores/useConversationStore";
 import useToolsStore from "@/stores/useToolsStore";
-import { Globe } from "lucide-react";
+import { Globe, Bell, BellOff } from "lucide-react";
 
 interface ChatProps {
   items: Item[];
@@ -26,8 +26,22 @@ const Chat: React.FC<ChatProps> = ({
   const itemsEndRef = useRef<HTMLDivElement>(null);
   const [inputMessageText, setinputMessageText] = useState<string>("");
   const [isComposing, setIsComposing] = useState(false);
+  const [notificationsEnabled, setNotificationsEnabled] = useState(false);
   const { isAssistantLoading, isStreaming } = useConversationStore();
   const { webSearchEnabled, setWebSearchEnabled } = useToolsStore();
+
+  useEffect(() => {
+    if (typeof window !== "undefined" && "Notification" in window) {
+      setNotificationsEnabled(Notification.permission === "granted");
+    }
+  }, []);
+
+  const requestNotificationPermission = async () => {
+    if (typeof window !== "undefined" && "Notification" in window) {
+      const permission = await Notification.requestPermission();
+      setNotificationsEnabled(permission === "granted");
+    }
+  };
 
   const scrollToBottom = () => {
     itemsEndRef.current?.scrollIntoView({ behavior: "instant" });
@@ -113,6 +127,18 @@ const Chat: React.FC<ChatProps> = ({
                     />
                   </div>
                   <div className="flex items-center gap-2">
+                    <button
+                      type="button"
+                      onClick={requestNotificationPermission}
+                      className={`flex items-center justify-center size-8 rounded-full transition-all ${
+                        notificationsEnabled 
+                          ? "bg-green-500 text-white" 
+                          : "bg-gray-100 text-gray-500 hover:bg-gray-200"
+                      }`}
+                      title={notificationsEnabled ? "Notifications enabled" : "Enable notifications"}
+                    >
+                      {notificationsEnabled ? <Bell size={16} /> : <BellOff size={16} />}
+                    </button>
                     <button
                       type="button"
                       onClick={() => setWebSearchEnabled(!webSearchEnabled)}
