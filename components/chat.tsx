@@ -11,6 +11,7 @@ import LoadingMessage from "./loading-message";
 import useConversationStore from "@/stores/useConversationStore";
 import useToolsStore from "@/stores/useToolsStore";
 import { Globe, Bell, BellOff, FlaskConical } from "lucide-react";
+import ClarifyingQuestions from "./clarifying-questions";
 
 interface ChatProps {
   items: Item[];
@@ -103,6 +104,7 @@ const Chat: React.FC<ChatProps> = ({
               );
             })}
             {isAssistantLoading && <LoadingMessage />}
+            <ClarifyingQuestions />
             <div ref={itemsEndRef} />
           </div>
         </div>
@@ -141,7 +143,12 @@ const Chat: React.FC<ChatProps> = ({
                     </button>
                     <button
                       type="button"
-                      onClick={() => setWebSearchEnabled(!webSearchEnabled)}
+                      onClick={() => {
+                        if (!webSearchEnabled) {
+                          setDeepResearchEnabled(false);
+                        }
+                        setWebSearchEnabled(!webSearchEnabled);
+                      }}
                       className={`flex items-center justify-center size-8 rounded-full transition-all ${
                         webSearchEnabled 
                           ? "bg-blue-500 text-white" 
@@ -153,7 +160,12 @@ const Chat: React.FC<ChatProps> = ({
                     </button>
                     <button
                       type="button"
-                      onClick={() => setDeepResearchEnabled(!deepResearchEnabled)}
+                      onClick={() => {
+                        if (!deepResearchEnabled) {
+                          setWebSearchEnabled(false);
+                        }
+                        setDeepResearchEnabled(!deepResearchEnabled);
+                      }}
                       className={`flex items-center justify-center size-8 rounded-full transition-all ${
                         deepResearchEnabled 
                           ? "bg-purple-500 text-white" 

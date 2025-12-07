@@ -13,7 +13,20 @@ export type StreamingPhase =
   | "calling_mcp"
   | "generating"
   | "deep_researching"
-  | "synthesizing";
+  | "synthesizing"
+  | "clarifying";
+
+export interface ClarifyingQuestion {
+  question: string;
+  options?: string[];
+}
+
+export interface ClarifyingState {
+  isActive: boolean;
+  originalQuery: string;
+  questions: ClarifyingQuestion[];
+  onSubmit: ((refinedQuery: string) => void) | null;
+}
 
 interface ConversationState {
   chatMessages: Item[];
@@ -21,6 +34,7 @@ interface ConversationState {
   isAssistantLoading: boolean;
   streamingPhase: StreamingPhase;
   isStreaming: boolean;
+  clarifyingState: ClarifyingState;
 
   setChatMessages: (items: Item[]) => void;
   setConversationItems: (messages: any[]) => void;
@@ -29,6 +43,7 @@ interface ConversationState {
   setAssistantLoading: (loading: boolean) => void;
   setStreamingPhase: (phase: StreamingPhase) => void;
   setIsStreaming: (streaming: boolean) => void;
+  setClarifyingState: (state: ClarifyingState) => void;
   rawSet: (state: any) => void;
   resetConversation: () => void;
 }
@@ -45,6 +60,12 @@ const useConversationStore = create<ConversationState>((set) => ({
   isAssistantLoading: false,
   streamingPhase: "idle",
   isStreaming: false,
+  clarifyingState: {
+    isActive: false,
+    originalQuery: "",
+    questions: [],
+    onSubmit: null,
+  },
   setChatMessages: (items) => set({ chatMessages: items }),
   setConversationItems: (messages) => set({ conversationItems: messages }),
   addChatMessage: (item) =>
@@ -56,6 +77,7 @@ const useConversationStore = create<ConversationState>((set) => ({
   setAssistantLoading: (loading) => set({ isAssistantLoading: loading }),
   setStreamingPhase: (phase) => set({ streamingPhase: phase }),
   setIsStreaming: (streaming) => set({ isStreaming: streaming }),
+  setClarifyingState: (state) => set({ clarifyingState: state }),
   rawSet: set,
   resetConversation: () =>
     set(() => ({
@@ -69,6 +91,12 @@ const useConversationStore = create<ConversationState>((set) => ({
       conversationItems: [],
       streamingPhase: "idle",
       isStreaming: false,
+      clarifyingState: {
+        isActive: false,
+        originalQuery: "",
+        questions: [],
+        onSubmit: null,
+      },
     })),
 }));
 

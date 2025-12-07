@@ -21,6 +21,11 @@ This is a Next.js application that demonstrates the OpenAI Responses API. It pro
   - Pipes the research report to GPT-5 Pro for intelligent synthesis
   - Shows "Deep researching" and "Synthesizing insights" streaming phases
   - Only triggers on fresh user messages (not tool-call follow-ups)
+- **Clarifying Questions:** Before running deep research, the app analyzes the query to see if clarifying questions would improve results
+  - If needed, shows an amber-themed UI with clickable options
+  - Automatically skips clarification for well-defined queries
+  - Users can skip manually or add custom details
+- **Mutually Exclusive Toggles:** Web search and deep research are now mutually exclusive - enabling one disables the other
 
 ## Project Architecture
 

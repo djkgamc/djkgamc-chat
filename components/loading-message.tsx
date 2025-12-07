@@ -49,6 +49,11 @@ const phaseConfig: Record<StreamingPhase, { icon: React.ReactNode; text: string;
     text: "Synthesizing insights", 
     color: "text-violet-500" 
   },
+  clarifying: { 
+    icon: <Brain className="w-4 h-4" />, 
+    text: "Analyzing query", 
+    color: "text-amber-500" 
+  },
 };
 
 const LoadingMessage: React.FC = () => {
