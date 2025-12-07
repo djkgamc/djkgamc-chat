@@ -1,4 +1,4 @@
-export const MODEL = "gpt-4.1";
+export const MODEL = "gpt-5-pro-2025-10-06";
 
 // Developer prompt for the assistant
 export const DEVELOPER_PROMPT = `
