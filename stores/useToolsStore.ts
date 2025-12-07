@@ -40,16 +40,15 @@ export interface ToolsState {
   mcpEnabled: boolean;
   mcpConfig: McpConfig;
   googleIntegrationEnabled: boolean;
+  deepResearchEnabled: boolean;
 }
 
 interface StoreState {
   fileSearchEnabled: boolean;
-  //previousFileSearchEnabled: boolean;
   setFileSearchEnabled: (enabled: boolean) => void;
   webSearchEnabled: boolean;
   setWebSearchEnabled: (enabled: boolean) => void;
   functionsEnabled: boolean;
-  //previousFunctionsEnabled: boolean;
   setFunctionsEnabled: (enabled: boolean) => void;
   googleIntegrationEnabled: boolean;
   setGoogleIntegrationEnabled: (enabled: boolean) => void;
@@ -63,6 +62,8 @@ interface StoreState {
   setMcpEnabled: (enabled: boolean) => void;
   mcpConfig: McpConfig;
   setMcpConfig: (config: McpConfig) => void;
+  deepResearchEnabled: boolean;
+  setDeepResearchEnabled: (enabled: boolean) => void;
 }
 
 const useToolsStore = create<StoreState>()(
@@ -112,6 +113,10 @@ const useToolsStore = create<StoreState>()(
       setVectorStore: (store) => set({ vectorStore: store }),
       setWebSearchConfig: (config) => set({ webSearchConfig: config }),
       setMcpConfig: (config) => set({ mcpConfig: config }),
+      deepResearchEnabled: false,
+      setDeepResearchEnabled: (enabled) => {
+        set({ deepResearchEnabled: enabled });
+      },
     }),
     {
       name: "tools-store",

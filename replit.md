@@ -15,6 +15,12 @@ This is a Next.js application that demonstrates the OpenAI Responses API. It pro
 - **Dynamic Streaming:** Added real-time status indicators showing thinking, searching, generating phases
 - **Animated Tool Calls:** Enhanced tool call UI with animated status states
 - **Model:** Set to gpt-5-pro-2025-10-06 with logging disabled (store: false)
+- **Browser Notifications:** Added notification bell button that alerts when responses complete (ideal for Chat Pro's longer response times)
+- **Deep Research Feature:** Added deep research toggle (flask icon, purple when active) that:
+  - Calls OpenAI's o4-mini-deep-research model for comprehensive research
+  - Pipes the research report to GPT-5 Pro for intelligent synthesis
+  - Shows "Deep researching" and "Synthesizing insights" streaming phases
+  - Only triggers on fresh user messages (not tool-call follow-ups)
 
 ## Project Architecture
 

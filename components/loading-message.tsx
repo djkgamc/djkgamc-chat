@@ -1,6 +1,6 @@
 import React from "react";
 import useConversationStore, { StreamingPhase } from "@/stores/useConversationStore";
-import { Globe, BookOpenText, Code2, Zap, Brain, Sparkles } from "lucide-react";
+import { Globe, BookOpenText, Code2, Zap, Brain, Sparkles, FlaskConical, Wand2 } from "lucide-react";
 
 const phaseConfig: Record<StreamingPhase, { icon: React.ReactNode; text: string; color: string }> = {
   idle: { icon: null, text: "", color: "" },
@@ -38,6 +38,16 @@ const phaseConfig: Record<StreamingPhase, { icon: React.ReactNode; text: string;
     icon: <Sparkles className="w-4 h-4" />, 
     text: "Generating", 
     color: "text-pink-500" 
+  },
+  deep_researching: { 
+    icon: <FlaskConical className="w-4 h-4" />, 
+    text: "Deep researching", 
+    color: "text-purple-600" 
+  },
+  synthesizing: { 
+    icon: <Wand2 className="w-4 h-4" />, 
+    text: "Synthesizing insights", 
+    color: "text-violet-500" 
   },
 };
 

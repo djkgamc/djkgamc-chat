@@ -11,7 +11,9 @@ export type StreamingPhase =
   | "running_code"
   | "calling_function"
   | "calling_mcp"
-  | "generating";
+  | "generating"
+  | "deep_researching"
+  | "synthesizing";
 
 interface ConversationState {
   chatMessages: Item[];

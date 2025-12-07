@@ -25,7 +25,7 @@ export default function Assistant() {
       setAssistantLoading(true);
       addConversationItem(userMessage);
       addChatMessage(userItem);
-      await processMessages();
+      await processMessages(true);
     } catch (error) {
       console.error("Error processing message:", error);
     }

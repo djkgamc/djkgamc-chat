@@ -135,7 +135,7 @@ export const handleTurn = async (
   }
 };
 
-export const processMessages = async () => {
+export const processMessages = async (isNewUserTurn: boolean = false) => {
   const {
     chatMessages,
     conversationItems,
@@ -150,11 +150,86 @@ export const processMessages = async () => {
 
   const toolsState = useToolsStore.getState() as ToolsState;
 
-  const allConversationItems = conversationItems;
+  let allConversationItems = [...conversationItems];
+
+  if (toolsState.deepResearchEnabled && isNewUserTurn) {
+    const lastItem = conversationItems[conversationItems.length - 1];
+    const isUserMessage = lastItem && lastItem.role === "user";
+    
+    if (isUserMessage) {
+      const userQuery = typeof lastItem.content === "string" 
+        ? lastItem.content 
+        : lastItem.content?.[0]?.text || lastItem.content;
+      
+      setStreamingPhase("deep_researching");
+      
+      chatMessages.push({
+        type: "tool_call",
+        tool_type: "web_search_call",
+        status: "searching",
+        id: "deep-research-" + Date.now(),
+        name: "Deep Research",
+      } as ToolCallItem);
+      setChatMessages([...chatMessages]);
+      
+      try {
+        const response = await fetch("/api/deep_research", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ query: userQuery }),
+        });
+        
+        if (response.ok) {
+          const { report } = await response.json();
+          
+          const lastToolCall = chatMessages[chatMessages.length - 1];
+          if (lastToolCall && lastToolCall.type === "tool_call") {
+            lastToolCall.status = "completed";
+            lastToolCall.output = "Research completed";
+          }
+          setChatMessages([...chatMessages]);
+          
+          setStreamingPhase("synthesizing");
+          
+          allConversationItems = [
+            ...conversationItems,
+            {
+              role: "system",
+              content: `The following is a deep research report relevant to the user's question. Use this research to provide a comprehensive, well-structured response:
+
+---
+DEEP RESEARCH REPORT:
+${report}
+---
+
+Based on this research, provide an insightful response that:
+1. Directly answers the original question
+2. Synthesizes the key findings from the research
+3. Provides relevant context and insights
+4. Uses citations where appropriate`,
+            },
+          ];
+        } else {
+          const lastToolCall = chatMessages[chatMessages.length - 1];
+          if (lastToolCall && lastToolCall.type === "tool_call") {
+            lastToolCall.status = "failed";
+          }
+          setChatMessages([...chatMessages]);
+          console.error("Deep research failed");
+        }
+      } catch (error) {
+        console.error("Error during deep research:", error);
+        const lastToolCall = chatMessages[chatMessages.length - 1];
+        if (lastToolCall && lastToolCall.type === "tool_call") {
+          lastToolCall.status = "failed";
+        }
+        setChatMessages([...chatMessages]);
+      }
+    }
+  }
 
   let assistantMessageContent = "";
   let functionArguments = "";
-  // For streaming MCP tool call arguments
   let mcpArguments = "";
 
   await handleTurn(

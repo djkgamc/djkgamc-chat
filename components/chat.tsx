@@ -10,7 +10,7 @@ import { Item, McpApprovalRequestItem } from "@/lib/assistant";
 import LoadingMessage from "./loading-message";
 import useConversationStore from "@/stores/useConversationStore";
 import useToolsStore from "@/stores/useToolsStore";
-import { Globe, Bell, BellOff } from "lucide-react";
+import { Globe, Bell, BellOff, FlaskConical } from "lucide-react";
 
 interface ChatProps {
   items: Item[];
@@ -28,7 +28,7 @@ const Chat: React.FC<ChatProps> = ({
   const [isComposing, setIsComposing] = useState(false);
   const [notificationsEnabled, setNotificationsEnabled] = useState(false);
   const { isAssistantLoading, isStreaming } = useConversationStore();
-  const { webSearchEnabled, setWebSearchEnabled } = useToolsStore();
+  const { webSearchEnabled, setWebSearchEnabled, deepResearchEnabled, setDeepResearchEnabled } = useToolsStore();
 
   useEffect(() => {
     if (typeof window !== "undefined" && "Notification" in window) {
@@ -150,6 +150,18 @@ const Chat: React.FC<ChatProps> = ({
                       title={webSearchEnabled ? "Web search enabled" : "Enable web search"}
                     >
                       <Globe size={16} />
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setDeepResearchEnabled(!deepResearchEnabled)}
+                      className={`flex items-center justify-center size-8 rounded-full transition-all ${
+                        deepResearchEnabled 
+                          ? "bg-purple-500 text-white" 
+                          : "bg-gray-100 text-gray-500 hover:bg-gray-200"
+                      }`}
+                      title={deepResearchEnabled ? "Deep Research enabled" : "Enable Deep Research"}
+                    >
+                      <FlaskConical size={16} />
                     </button>
                     <button
                       disabled={!inputMessageText}
