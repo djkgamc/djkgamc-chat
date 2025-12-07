@@ -11,6 +11,10 @@ This is a Next.js application that demonstrates the OpenAI Responses API. It pro
 - Added `allowedDevOrigins` configuration to support Replit's proxy/iframe setup
 - Configured deployment settings for production
 - All dependencies installed and working
+- **UI Overhaul:** Removed sidebar, added inline web search toggle next to message input
+- **Dynamic Streaming:** Added real-time status indicators showing thinking, searching, generating phases
+- **Animated Tool Calls:** Enhanced tool call UI with animated status states
+- **Model:** Set to gpt-5-pro-2025-10-06 with logging disabled (store: false)
 
 ## Project Architecture
 

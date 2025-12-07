@@ -142,7 +142,11 @@ export const processMessages = async () => {
     setChatMessages,
     setConversationItems,
     setAssistantLoading,
+    setStreamingPhase,
+    setIsStreaming,
   } = useConversationStore.getState();
+  
+  setStreamingPhase("thinking");
 
   const toolsState = useToolsStore.getState() as ToolsState;
 
@@ -161,6 +165,9 @@ export const processMessages = async () => {
         case "response.output_text.delta":
         case "response.output_text.annotation.added": {
           const { delta, item_id, annotation } = data;
+          
+          setStreamingPhase("generating");
+          setIsStreaming(true);
 
           let partial = "";
           if (typeof delta === "string") {
@@ -244,13 +251,14 @@ export const processMessages = async () => {
               break;
             }
             case "function_call": {
+              setStreamingPhase("calling_function");
               functionArguments += item.arguments || "";
               chatMessages.push({
                 type: "tool_call",
                 tool_type: "function_call",
                 status: "in_progress",
                 id: item.id,
-                name: item.name, // function name,e.g. "get_weather"
+                name: item.name,
                 arguments: item.arguments || "",
                 parsedArguments: {},
                 output: null,
@@ -259,6 +267,7 @@ export const processMessages = async () => {
               break;
             }
             case "web_search_call": {
+              setStreamingPhase("searching_web");
               chatMessages.push({
                 type: "tool_call",
                 tool_type: "web_search_call",
@@ -269,6 +278,7 @@ export const processMessages = async () => {
               break;
             }
             case "file_search_call": {
+              setStreamingPhase("searching_files");
               chatMessages.push({
                 type: "tool_call",
                 tool_type: "file_search_call",
@@ -279,6 +289,7 @@ export const processMessages = async () => {
               break;
             }
             case "mcp_call": {
+              setStreamingPhase("calling_mcp");
               mcpArguments = item.arguments || "";
               chatMessages.push({
                 type: "tool_call",
@@ -294,6 +305,7 @@ export const processMessages = async () => {
               break;
             }
             case "code_interpreter_call": {
+              setStreamingPhase("running_code");
               chatMessages.push({
                 type: "tool_call",
                 tool_type: "code_interpreter_call",
@@ -507,6 +519,8 @@ export const processMessages = async () => {
 
         case "response.completed": {
           console.log("response completed", data);
+          setStreamingPhase("idle");
+          setIsStreaming(false);
           const { response } = data;
 
           // Handle MCP tools list (append all lists, not just the first)

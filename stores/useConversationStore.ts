@@ -3,19 +3,30 @@ import { Item } from "@/lib/assistant";
 import { ChatCompletionMessageParam } from "openai/resources/chat/completions";
 import { INITIAL_MESSAGE } from "@/config/constants";
 
+export type StreamingPhase = 
+  | "idle"
+  | "thinking"
+  | "searching_web"
+  | "searching_files"
+  | "running_code"
+  | "calling_function"
+  | "calling_mcp"
+  | "generating";
+
 interface ConversationState {
-  // Items displayed in the chat
   chatMessages: Item[];
-  // Items sent to the Responses API
   conversationItems: any[];
-  // Whether we are waiting for the assistant response
   isAssistantLoading: boolean;
+  streamingPhase: StreamingPhase;
+  isStreaming: boolean;
 
   setChatMessages: (items: Item[]) => void;
   setConversationItems: (messages: any[]) => void;
   addChatMessage: (item: Item) => void;
   addConversationItem: (message: ChatCompletionMessageParam) => void;
   setAssistantLoading: (loading: boolean) => void;
+  setStreamingPhase: (phase: StreamingPhase) => void;
+  setIsStreaming: (streaming: boolean) => void;
   rawSet: (state: any) => void;
   resetConversation: () => void;
 }
@@ -30,6 +41,8 @@ const useConversationStore = create<ConversationState>((set) => ({
   ],
   conversationItems: [],
   isAssistantLoading: false,
+  streamingPhase: "idle",
+  isStreaming: false,
   setChatMessages: (items) => set({ chatMessages: items }),
   setConversationItems: (messages) => set({ conversationItems: messages }),
   addChatMessage: (item) =>
@@ -39,6 +52,8 @@ const useConversationStore = create<ConversationState>((set) => ({
       conversationItems: [...state.conversationItems, message],
     })),
   setAssistantLoading: (loading) => set({ isAssistantLoading: loading }),
+  setStreamingPhase: (phase) => set({ streamingPhase: phase }),
+  setIsStreaming: (streaming) => set({ isStreaming: streaming }),
   rawSet: set,
   resetConversation: () =>
     set(() => ({
@@ -50,6 +65,8 @@ const useConversationStore = create<ConversationState>((set) => ({
         },
       ],
       conversationItems: [],
+      streamingPhase: "idle",
+      isStreaming: false,
     })),
 }));
 

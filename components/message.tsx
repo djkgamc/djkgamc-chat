@@ -4,9 +4,10 @@ import ReactMarkdown from "react-markdown";
 
 interface MessageProps {
   message: MessageItem;
+  showCursor?: boolean;
 }
 
-const Message: React.FC<MessageProps> = ({ message }) => {
+const Message: React.FC<MessageProps> = ({ message, showCursor = false }) => {
   return (
     <div className="text-sm">
       {message.role === "user" ? (
@@ -28,9 +29,14 @@ const Message: React.FC<MessageProps> = ({ message }) => {
           <div className="flex">
             <div className="mr-4 rounded-[16px] px-4 py-2 md:mr-24 text-black bg-white font-light">
               <div>
-                <ReactMarkdown>
-                  {message.content[0].text as string}
-                </ReactMarkdown>
+                <span className="inline">
+                  <ReactMarkdown>
+                    {message.content[0].text as string}
+                  </ReactMarkdown>
+                </span>
+                {showCursor && (
+                  <span className="inline-block w-2 h-4 ml-0.5 bg-gray-400 animate-pulse rounded-sm" />
+                )}
                 {message.content[0].annotations &&
                   message.content[0].annotations
                     .filter(

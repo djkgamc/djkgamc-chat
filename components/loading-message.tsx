@@ -1,12 +1,64 @@
 import React from "react";
+import useConversationStore, { StreamingPhase } from "@/stores/useConversationStore";
+import { Globe, BookOpenText, Code2, Zap, Brain, Sparkles } from "lucide-react";
+
+const phaseConfig: Record<StreamingPhase, { icon: React.ReactNode; text: string; color: string }> = {
+  idle: { icon: null, text: "", color: "" },
+  thinking: { 
+    icon: <Brain className="w-4 h-4" />, 
+    text: "Thinking", 
+    color: "text-purple-500" 
+  },
+  searching_web: { 
+    icon: <Globe className="w-4 h-4" />, 
+    text: "Searching the web", 
+    color: "text-blue-500" 
+  },
+  searching_files: { 
+    icon: <BookOpenText className="w-4 h-4" />, 
+    text: "Searching files", 
+    color: "text-green-500" 
+  },
+  running_code: { 
+    icon: <Code2 className="w-4 h-4" />, 
+    text: "Running code", 
+    color: "text-orange-500" 
+  },
+  calling_function: { 
+    icon: <Zap className="w-4 h-4" />, 
+    text: "Calling function", 
+    color: "text-yellow-500" 
+  },
+  calling_mcp: { 
+    icon: <Zap className="w-4 h-4" />, 
+    text: "Calling MCP tool", 
+    color: "text-indigo-500" 
+  },
+  generating: { 
+    icon: <Sparkles className="w-4 h-4" />, 
+    text: "Generating", 
+    color: "text-pink-500" 
+  },
+};
 
 const LoadingMessage: React.FC = () => {
+  const { streamingPhase } = useConversationStore();
+  const config = phaseConfig[streamingPhase] || phaseConfig.thinking;
+
   return (
     <div className="text-sm">
-      <div className="flex flex-col">
-        <div className="flex">
-          <div className="mr-4 rounded-[16px] px-4 py-2 md:mr-24 text-black bg-white font-light">
-            <div className="w-3 h-3 animate-pulse bg-black rounded-full" />
+      <div className="flex items-center gap-2 py-2">
+        <div className={`flex items-center gap-2 ${config.color}`}>
+          <div className="animate-pulse">
+            {config.icon || <Brain className="w-4 h-4" />}
+          </div>
+          <span className="text-sm font-medium">
+            {config.text || "Thinking"}
+          </span>
+          <div className="flex gap-1">
+            <span className="w-1.5 h-1.5 bg-current rounded-full animate-bounce" style={{ animationDelay: "0ms" }} />
+            <span className="w-1.5 h-1.5 bg-current rounded-full animate-bounce" style={{ animationDelay: "150ms" }} />
+            <span className="w-1.5 h-1.5 bg-current rounded-full animate-bounce" style={{ animationDelay: "300ms" }} />
           </div>
         </div>
       </div>

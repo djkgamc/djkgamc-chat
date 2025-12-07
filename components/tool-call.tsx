@@ -10,18 +10,28 @@ interface ToolCallProps {
 }
 
 function ApiCallCell({ toolCall }: ToolCallProps) {
+  const isInProgress = toolCall.status !== "completed";
   return (
     <div className="flex flex-col w-[70%] relative mb-[-8px]">
       <div>
         <div className="flex flex-col text-sm rounded-[16px]">
           <div className="font-semibold p-3 pl-0 text-gray-700 rounded-b-none flex gap-2">
-            <div className="flex gap-2 items-center text-blue-500 ml-[-8px]">
-              <Zap size={16} />
+            <div className="flex gap-2 items-center text-yellow-500 ml-[-8px]">
+              <div className={isInProgress ? "animate-pulse" : ""}>
+                <Zap size={16} />
+              </div>
               <div className="text-sm font-medium">
                 {toolCall.status === "completed"
                   ? `Called ${toolCall.name}`
-                  : `Calling ${toolCall.name}...`}
+                  : `Calling ${toolCall.name}`}
               </div>
+              {isInProgress && (
+                <div className="flex gap-1">
+                  <span className="w-1 h-1 bg-current rounded-full animate-bounce" style={{ animationDelay: "0ms" }} />
+                  <span className="w-1 h-1 bg-current rounded-full animate-bounce" style={{ animationDelay: "150ms" }} />
+                  <span className="w-1 h-1 bg-current rounded-full animate-bounce" style={{ animationDelay: "300ms" }} />
+                </div>
+              )}
             </div>
           </div>
 
@@ -69,44 +79,74 @@ function ApiCallCell({ toolCall }: ToolCallProps) {
 }
 
 function FileSearchCell({ toolCall }: ToolCallProps) {
+  const isInProgress = toolCall.status !== "completed";
   return (
-    <div className="flex gap-2 items-center text-blue-500 mb-[-16px] ml-[-8px]">
-      <BookOpenText size={16} />
+    <div className="flex gap-2 items-center text-green-500 mb-[-16px] ml-[-8px]">
+      <div className={isInProgress ? "animate-pulse" : ""}>
+        <BookOpenText size={16} />
+      </div>
       <div className="text-sm font-medium mb-0.5">
         {toolCall.status === "completed"
           ? "Searched files"
-          : "Searching files..."}
+          : "Searching files"}
       </div>
+      {isInProgress && (
+        <div className="flex gap-1">
+          <span className="w-1 h-1 bg-current rounded-full animate-bounce" style={{ animationDelay: "0ms" }} />
+          <span className="w-1 h-1 bg-current rounded-full animate-bounce" style={{ animationDelay: "150ms" }} />
+          <span className="w-1 h-1 bg-current rounded-full animate-bounce" style={{ animationDelay: "300ms" }} />
+        </div>
+      )}
     </div>
   );
 }
 
 function WebSearchCell({ toolCall }: ToolCallProps) {
+  const isInProgress = toolCall.status !== "completed";
   return (
     <div className="flex gap-2 items-center text-blue-500 mb-[-16px] ml-[-8px]">
-      <Globe size={16} />
+      <div className={isInProgress ? "animate-spin" : ""} style={{ animationDuration: "2s" }}>
+        <Globe size={16} />
+      </div>
       <div className="text-sm font-medium">
         {toolCall.status === "completed"
           ? "Searched the web"
-          : "Searching the web..."}
+          : "Searching the web"}
       </div>
+      {isInProgress && (
+        <div className="flex gap-1">
+          <span className="w-1 h-1 bg-current rounded-full animate-bounce" style={{ animationDelay: "0ms" }} />
+          <span className="w-1 h-1 bg-current rounded-full animate-bounce" style={{ animationDelay: "150ms" }} />
+          <span className="w-1 h-1 bg-current rounded-full animate-bounce" style={{ animationDelay: "300ms" }} />
+        </div>
+      )}
     </div>
   );
 }
 
 function McpCallCell({ toolCall }: ToolCallProps) {
+  const isInProgress = toolCall.status !== "completed";
   return (
     <div className="flex flex-col w-[70%] relative mb-[-8px]">
       <div>
         <div className="flex flex-col text-sm rounded-[16px]">
           <div className="font-semibold p-3 pl-0 text-gray-700 rounded-b-none flex gap-2">
-            <div className="flex gap-2 items-center text-blue-500 ml-[-8px]">
-              <Zap size={16} />
+            <div className="flex gap-2 items-center text-indigo-500 ml-[-8px]">
+              <div className={isInProgress ? "animate-pulse" : ""}>
+                <Zap size={16} />
+              </div>
               <div className="text-sm font-medium">
                 {toolCall.status === "completed"
-                  ? `Called ${toolCall.name} via MCP tool`
-                  : `Calling ${toolCall.name} via MCP tool...`}
+                  ? `Called ${toolCall.name} via MCP`
+                  : `Calling ${toolCall.name} via MCP`}
               </div>
+              {isInProgress && (
+                <div className="flex gap-1">
+                  <span className="w-1 h-1 bg-current rounded-full animate-bounce" style={{ animationDelay: "0ms" }} />
+                  <span className="w-1 h-1 bg-current rounded-full animate-bounce" style={{ animationDelay: "150ms" }} />
+                  <span className="w-1 h-1 bg-current rounded-full animate-bounce" style={{ animationDelay: "300ms" }} />
+                </div>
+              )}
             </div>
           </div>
 
@@ -161,17 +201,27 @@ function McpCallCell({ toolCall }: ToolCallProps) {
 }
 
 function CodeInterpreterCell({ toolCall }: ToolCallProps) {
+  const isInProgress = toolCall.status !== "completed";
   return (
     <div className="flex flex-col w-[70%] relative mb-[-8px]">
       <div className="flex flex-col text-sm rounded-[16px]">
         <div className="font-semibold p-3 pl-0 text-gray-700 rounded-b-none flex gap-2">
-          <div className="flex gap-2 items-center text-blue-500 ml-[-8px]">
-            <Code2 size={16} />
+          <div className="flex gap-2 items-center text-orange-500 ml-[-8px]">
+            <div className={isInProgress ? "animate-pulse" : ""}>
+              <Code2 size={16} />
+            </div>
             <div className="text-sm font-medium">
               {toolCall.status === "completed"
                 ? "Code executed"
-                : "Running code interpreter..."}
+                : "Running code"}
             </div>
+            {isInProgress && (
+              <div className="flex gap-1">
+                <span className="w-1 h-1 bg-current rounded-full animate-bounce" style={{ animationDelay: "0ms" }} />
+                <span className="w-1 h-1 bg-current rounded-full animate-bounce" style={{ animationDelay: "150ms" }} />
+                <span className="w-1 h-1 bg-current rounded-full animate-bounce" style={{ animationDelay: "300ms" }} />
+              </div>
+            )}
           </div>
         </div>
         <div className="bg-[#fafafa] rounded-xl py-2 ml-4 mt-2">
