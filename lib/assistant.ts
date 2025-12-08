@@ -475,7 +475,19 @@ Based on this research, provide an insightful response that:
             toolCallMessage.call_id = item.call_id;
             setChatMessages([...chatMessages]);
           }
-          conversationItems.push(item);
+          // Strip IDs from items for store: false compatibility
+          // Only keep role and content for message items
+          if (item.type === "message" && item.role === "assistant") {
+            const strippedItem = {
+              role: item.role,
+              content: item.content,
+            };
+            conversationItems.push(strippedItem);
+          } else {
+            // For tool calls and other items, keep the structure but remove id
+            const { id, ...itemWithoutId } = item;
+            conversationItems.push(itemWithoutId);
+          }
           setConversationItems([...conversationItems]);
           if (
             toolCallMessage &&
