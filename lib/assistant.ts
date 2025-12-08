@@ -78,7 +78,9 @@ export const handleTurn = async (
 ) => {
   try {
     const { googleIntegrationEnabled } = useToolsStore.getState();
-    // Get response from the API (defined in app/api/turn_response/route.ts)
+    
+    const turnCount = messages.filter((m: any) => m.role === "user").length;
+    
     const response = await fetch("/api/turn_response", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -86,6 +88,7 @@ export const handleTurn = async (
         messages: messages,
         toolsState: toolsState,
         googleIntegrationEnabled,
+        turnCount,
       }),
     });
 

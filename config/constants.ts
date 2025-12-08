@@ -1,5 +1,6 @@
-// export const MODEL = "gpt-5-pro-2025-10-06";
-export const MODEL = "gpt-5.1-2025-11-13";
+export const INITIAL_MODEL = "gpt-5-pro-2025-10-06";
+export const FOLLOW_UP_MODEL = "chatgpt-5.1-2025-06-02";
+export const FOLLOW_UP_REASONING = "medium";
 
 // Developer prompt for the assistant
 export const DEVELOPER_PROMPT = `
