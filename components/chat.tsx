@@ -12,6 +12,7 @@ import useConversationStore from "@/stores/useConversationStore";
 import useToolsStore from "@/stores/useToolsStore";
 import { Globe, FlaskConical } from "lucide-react";
 import ClarifyingQuestions from "./clarifying-questions";
+import ResearchCats from "./research-cats";
 
 interface ChatProps {
   items: Item[];
@@ -28,7 +29,7 @@ const Chat: React.FC<ChatProps> = ({
   const [inputMessageText, setinputMessageText] = useState<string>("");
   const [isComposing, setIsComposing] = useState(false);
   const [notificationsEnabled, setNotificationsEnabled] = useState(false);
-  const { isAssistantLoading, isStreaming } = useConversationStore();
+  const { isAssistantLoading, isStreaming, streamingPhase } = useConversationStore();
   const { webSearchEnabled, setWebSearchEnabled, deepResearchEnabled, setDeepResearchEnabled } = useToolsStore();
 
   useEffect(() => {
@@ -63,8 +64,10 @@ const Chat: React.FC<ChatProps> = ({
   }, [items]);
 
   return (
-    <div className="flex justify-center items-center min-h-screen h-full w-full">
-      <div className="flex grow flex-col h-full min-h-screen max-w-[750px] w-full">
+    <>
+      {streamingPhase === "deep_researching" && <ResearchCats />}
+      <div className="flex justify-center items-center min-h-screen h-full w-full">
+        <div className="flex grow flex-col h-full min-h-screen max-w-[750px] w-full">
         <div className="flex-1 overflow-y-auto px-3 sm:px-6 md:px-10 flex flex-col">
           <div className="mt-auto space-y-5 pt-4 pb-4">
             {items.map((item, index) => {
@@ -193,8 +196,9 @@ const Chat: React.FC<ChatProps> = ({
             </div>
           </div>
         </div>
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 
