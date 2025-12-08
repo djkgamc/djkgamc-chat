@@ -1,5 +1,5 @@
-export const MODEL = "gpt-5-pro-2025-10-06";
-// export const MODEL = "gpt-5.1-2025-11-13";
+// export const MODEL = "gpt-5-pro-2025-10-06";
+export const MODEL = "gpt-5.1-2025-11-13";
 
 // Developer prompt for the assistant
 export const DEVELOPER_PROMPT = `
