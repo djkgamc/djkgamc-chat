@@ -28,18 +28,13 @@ const Chat: React.FC<ChatProps> = ({
   const itemsEndRef = useRef<HTMLDivElement>(null);
   const [inputMessageText, setinputMessageText] = useState<string>("");
   const [isComposing, setIsComposing] = useState(false);
-  const [notificationsEnabled, setNotificationsEnabled] = useState(false);
   const { isAssistantLoading, isStreaming, streamingPhase } = useConversationStore();
   const { webSearchEnabled, setWebSearchEnabled, deepResearchEnabled, setDeepResearchEnabled } = useToolsStore();
 
   useEffect(() => {
     if (typeof window !== "undefined" && "Notification" in window) {
-      if (Notification.permission === "granted") {
-        setNotificationsEnabled(true);
-      } else if (Notification.permission !== "denied") {
-        Notification.requestPermission().then((permission) => {
-          setNotificationsEnabled(permission === "granted");
-        });
+      if (Notification.permission !== "granted" && Notification.permission !== "denied") {
+        Notification.requestPermission();
       }
     }
   }, []);
