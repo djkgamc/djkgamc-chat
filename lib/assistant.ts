@@ -272,6 +272,8 @@ export const processMessages = async (isNewUserTurn: boolean = false, skipClarif
 
       const report = await runDeepResearch(userQuery);
 
+      useToolsStore.getState().setDeepResearchEnabled(false);
+
       if (report) {
         setStreamingPhase("synthesizing");
 

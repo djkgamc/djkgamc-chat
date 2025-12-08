@@ -1,6 +1,5 @@
 import OpenAI from "openai";
-
-const DEEP_RESEARCH_MODEL = "o4-mini-deep-research-2025-06-26";
+import { DEEP_RESEARCH_MODEL } from "@/config/constants";
 
 export async function POST(request: Request) {
   try {
