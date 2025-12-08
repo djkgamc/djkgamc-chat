@@ -37,6 +37,10 @@ This is a Next.js application that demonstrates the OpenAI Responses API. It pro
   - Responsive padding for narrow screens
   - Sticky message input at the bottom
   - Gradient fade effect above input area
+- **Research Cats Animation:** During deep research phase, animated black cats with golden eyes appear across the screen:
+  - 8 cats positioned around the viewport with bobbing and looking animations
+  - Each cat has a small "researching..." caption
+  - Adds whimsy to the waiting experience during long research operations
 
 ## Project Architecture
 
